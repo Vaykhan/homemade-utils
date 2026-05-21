@@ -42,6 +42,9 @@ void print_hex(FILE* binary, int width){
   long long int offset = 0;
 
   while((n = fread(buffer, 1, width, binary)) > 0 ){ //n is the number of bytes read
+    if(ferror(binary)){
+      perror("fread");
+    }
     offset_line(offset);
     hexadecimal_line(buffer, n, width);
     ascii_line(buffer,n);
@@ -65,8 +68,10 @@ int main(int argc, char *argv[]){
     return 1;
   }
 
-
   print_hex(binary, 16); //modify the width according to your needs
 
+
+  fclose(binary);
+  
   return 0;
 }
