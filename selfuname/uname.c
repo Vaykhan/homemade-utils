@@ -7,7 +7,7 @@
  * 
  * (Trying to mimic the format of the other utils)
  * 
- * possible flags -> amnrspv
+ * possible flags -> snrvmpa
  *
 */
 
@@ -27,17 +27,24 @@
 #define PRINT_MACHINE_ARCH  0x20 // -p
 #define PRINT_ALL           0x3F // -a
 
+static void usage();
+
 int main(int argc, char **argv)
 {
     struct utsname name;
-    uname(&name);
+    if (uname(&name) == -1)
+    {
+        perror("uname");
+        return 1;
+    }
 
     char uname_mask = 0;
 
-    while (getopt(argc,argv,"snrvmpa") != -1)
+    int c;
+    while ((c = getopt(argc,argv,"snrvmpa")) != -1)
     {
 
-        switch (*optarg)
+        switch (c)
         {
         case 's':
             uname_mask |= PRINT_SYSNAME;
@@ -67,5 +74,49 @@ int main(int argc, char **argv)
 
     }
 
+
+	if (optind != argc)
+		usage();
+
+	if (!uname_mask)
+		uname_mask = PRINT_SYSNAME;
+
+
+    if (uname_mask & PRINT_SYSNAME)
+    {
+        printf("%s ",name.sysname);
+    }
+
+    if (uname_mask & PRINT_HOSTNAME)
+    {
+        printf("%s ",name.nodename);
+    }
+
+    if (uname_mask & PRINT_RELEASE)
+    {
+        printf("%s ",name.release);
+    }
+
+    if (uname_mask & PRINT_VERSION)
+    {
+        printf("%s ",name.version);
+    }
+
+    if (uname_mask & PRINT_MACHINE)
+    {
+        printf("%s ",name.machine);
+    }
+
+    if (uname_mask & PRINT_MACHINE_ARCH)
+    {
+        printf("%s ",name.machine);
+    }
+
     return 0;
+}
+
+static void usage()
+{
+    fprintf(stderr,"Usage: uname [-snrvmpa]");
+    _exit(1);
 }
