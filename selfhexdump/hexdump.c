@@ -1,10 +1,21 @@
+/*
+ * hexdump - make a hexdump(no endianness considered, straight up bytes only)
+ *
+ * very clanky but probably works 
+ *
+ * Author: Vaykhan
+ * Date: 2026
+ *
+ */
+
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdint.h>
 
 int print_equivalent(char byte){
-  if(isprint((unsigned char)byte) && !isspace((unsigned char)byte)){
+  if(isprint((unsigned char)byte) && ( (unsigned char)byte == ' ' || !isspace((unsigned char)byte) )){
     return byte;
   }
   else {
