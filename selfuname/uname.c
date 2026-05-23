@@ -17,14 +17,15 @@
 #include <sys/utsname.h>
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
+
 
 #define PRINT_SYSNAME       0x01 // -s
 #define PRINT_HOSTNAME      0x02 // -n
 #define PRINT_RELEASE       0x04 // -r
 #define PRINT_VERSION       0x08 // -v
 #define PRINT_MACHINE       0x10 // -m
-#define PRINT_MACHINE_ARCH  0x20 // -p
 #define PRINT_ALL           0x3F // -a
 
 static void usage();
@@ -61,11 +62,8 @@ int main(int argc, char **argv)
         case 'm':
             uname_mask |= PRINT_MACHINE;
             break;
-        case 'p':
-            uname_mask |= PRINT_MACHINE_ARCH;
-            break;
         case 'a':
-            uname_mask |= PRINT_ALL;
+            uname_mask = PRINT_ALL;
             break;  
         default:
             uname_mask |= PRINT_SYSNAME;
@@ -107,16 +105,11 @@ int main(int argc, char **argv)
         printf("%s ",name.machine);
     }
 
-    if (uname_mask & PRINT_MACHINE_ARCH)
-    {
-        printf("%s ",name.machine);
-    }
-
     return 0;
 }
 
 static void usage()
 {
     fprintf(stderr,"Usage: uname [-snrvmpa]");
-    _exit(1);
+    exit(1);
 }
