@@ -7,13 +7,12 @@
  * 
  * (Trying to mimic the format of the other utils)
  * 
- * possible flags -> snrvmpa
+ * possible flags -> snrvma
  *
 */
 
 #define _DEFAULT_SOURCE // For linux portability
 
-#include <sys/param.h>
 #include <sys/utsname.h>
 
 #include <stdio.h>
@@ -39,10 +38,10 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    char uname_mask = 0;
+    int uname_mask = 0;
 
     int c;
-    while ((c = getopt(argc,argv,"snrvmpa")) != -1)
+    while ((c = getopt(argc,argv,"snrvma")) != -1)
     {
 
         switch (c)
@@ -110,6 +109,6 @@ int main(int argc, char **argv)
 
 static void usage()
 {
-    fprintf(stderr,"Usage: uname [-snrvmpa]");
+    fprintf(stderr,"Usage: uname [-snrvma]\n");
     exit(1);
 }
