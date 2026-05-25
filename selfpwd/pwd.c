@@ -51,16 +51,24 @@ int main(int argc, char **argv)
 
     printf("%s\n",workdir);
 
+    if (pflag) free(workdir);
+    // free if pflag (the case we malloced)
+
     return 0;
 
 }
 
 char * getcwd_physical(void)
 {
-    size_t size = 64;
+    size_t size = 8;
     char *buff = malloc(size);
 
-    getcwd(buff,size);
+    while (getcwd(buff,size) == NULL)
+    {
+        size*=2;
+        buff = realloc(buff,size);
+    }
+
     return buff;
 }
 
