@@ -8,12 +8,12 @@
  *
  */
 
-
+// Todo: add support for reversing hexdumps, and processing multiple files
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdint.h>
-
+#include <stdlib.h>
 int print_equivalent(char byte){
   if(isprint((unsigned char)byte) && ( (unsigned char)byte == ' ' || !isspace((unsigned char)byte) )){
     return byte;
@@ -48,10 +48,10 @@ void ascii_line(unsigned char buffer[], size_t n){
 
 
 void print_hex(FILE* binary, int width){
-  unsigned char buffer[width];
+  unsigned char *buffer;
   uint64_t n;
   long long int offset = 0;
-
+  buffer = malloc(sizeof(unsigned char[width]));
   while((n = fread(buffer, 1, width, binary)) > 0 ){ //n is the number of bytes read
     if(ferror(binary)){
       perror("fread");
@@ -63,6 +63,7 @@ void print_hex(FILE* binary, int width){
     printf("\n");
   }
   printf("\n");
+  free(buffer);
 }
 
 
