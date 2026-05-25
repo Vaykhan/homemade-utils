@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <errno.h>
 
 int pflag = 0;
 
@@ -26,7 +27,7 @@ char * getcwd_logical(void);
 
 int main(int argc, char **argv)
 {
-    char c;
+    int c;
     while ((c = getopt(argc,argv,"LP")) != -1)
     {
         switch (c)
@@ -60,13 +61,28 @@ int main(int argc, char **argv)
 
 char * getcwd_physical(void)
 {
-    size_t size = 8;
+    size_t size = 64;
     char *buff = malloc(size);
 
     while (getcwd(buff,size) == NULL)
     {
+
+        if (errno != ERANGE) 
+        {
+            perror("range");
+            free(buff);
+            exit(-1);
+        }
+
         size*=2;
-        buff = realloc(buff,size);
+        char * temp = realloc(buff,size);
+        if (temp == NULL)
+        {
+            perror("memory");
+            free(buff);
+            exit(-2);
+        }
+        buff = temp;
     }
 
     return buff;
@@ -74,5 +90,11 @@ char * getcwd_physical(void)
 
 char * getcwd_logical(void)
 {
-    return getenv("PWD");
+    char *cwd = getenv("PWD");
+    if (cwd == NULL)
+    {
+        fprintf(stderr,"PWD not set\n");
+        exit(-3);
+    }
+    return cwd;
 }
