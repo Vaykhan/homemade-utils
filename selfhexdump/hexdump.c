@@ -14,6 +14,8 @@
 #include <ctype.h>
 #include <stdint.h>
 #include <stdlib.h>
+
+
 int print_equivalent(char byte){
   if(isprint((unsigned char)byte) && ( (unsigned char)byte == ' ' || !isspace((unsigned char)byte) )){
     return byte;
@@ -23,9 +25,11 @@ int print_equivalent(char byte){
   }
 }
 
+
 void offset_line(uint64_t offset){
   printf("%08lx: ", offset);
 }
+
 
 void hexadecimal_line(unsigned char buffer[], size_t n, size_t width ){
   for(size_t i = 0; i<n; i++){
@@ -37,6 +41,7 @@ void hexadecimal_line(unsigned char buffer[], size_t n, size_t width ){
   }
     return;
 }
+
 
 void ascii_line(unsigned char buffer[], size_t n){
   printf("|");
@@ -51,7 +56,9 @@ void print_hex(FILE* binary, int width){
   unsigned char *buffer;
   uint64_t n;
   long long int offset = 0;
+
   buffer = malloc(sizeof(unsigned char[width]));
+
   while((n = fread(buffer, 1, width, binary)) > 0 ){ //n is the number of bytes read
     if(ferror(binary)){
       perror("fread");
@@ -62,8 +69,11 @@ void print_hex(FILE* binary, int width){
     offset += width;
     printf("\n");
   }
+
   printf("\n");
+
   free(buffer);
+
 }
 
 
