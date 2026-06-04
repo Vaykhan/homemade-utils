@@ -19,18 +19,30 @@ int main(int argc,char ** argv)
 
     struct timespec time = {0,0};
     char * str = *++argv;
+    char is_float;
 
     for (; isdigit(*str); str++)
     {
         time.tv_sec *= 10;
         time.tv_sec += *str - '0';
     }
+
+    if (*str == '\0')
+        is_float = 0;
+    else if (*str == '.')
+        is_float = 1;
+    else
+    {
+        fprintf(stderr,"\"%s\": Only intigers and floats are allowed\n",*argv);
+        exit(2);
+    }
+
     
-    printf("inputted intiger is %d",time.tv_sec);
+    printf("inputted intiger is %d\n",time.tv_sec);
 }
 
 void usage(char * program_name)
 {
-    fprintf(stderr,"Usage: %s [seconds]",program_name);
+    fprintf(stderr,"Usage: %s [seconds]\n",program_name);
     exit(1);
 }
