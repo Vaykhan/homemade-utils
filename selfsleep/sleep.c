@@ -36,7 +36,7 @@ int main(int argc,char ** argv)
     else
     {
         fprintf(stderr,"\"%s\": Only positive intigers and floats are allowed\n",*argv);
-        exit(2);
+        return 2;
     }
 
     str++;
@@ -46,9 +46,12 @@ int main(int argc,char ** argv)
         time.tv_nsec += multiplier * (*str - '0');
         str++;
     }
-    
-    printf("inputted number's whole part is %d\n",time.tv_sec);
-    printf("inputted number's frational part is %d\n",time.tv_nsec);
+
+    if (*str != '\0')
+    {
+        fprintf(stderr,"\"%s\": Only positive intigers and floats are allowed\n",*argv);
+        return 3;
+    }
 
     nanosleep(&time,NULL);
 
