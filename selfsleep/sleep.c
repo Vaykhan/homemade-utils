@@ -41,16 +41,19 @@ int main(int argc,char ** argv)
 
     str++;
 
-    for (int multiplier = 100000000;isdigit(*str);multiplier /= 10)
+    if (is_float)
     {
-        time.tv_nsec += multiplier * (*str - '0');
-        str++;
-    }
+        for (int multiplier = 100000000;isdigit(*str);multiplier /= 10)
+        {
+            time.tv_nsec += multiplier * (*str - '0');
+            str++;
+        }
 
-    if (*str != '\0')
-    {
-        fprintf(stderr,"\"%s\": Only positive intigers and floats are allowed\n",*argv);
-        return 3;
+        if (*str != '\0')
+        {
+            fprintf(stderr,"\"%s\": Only positive intigers and floats are allowed\n",*argv);
+            return 3;
+        }
     }
 
     nanosleep(&time,NULL);
