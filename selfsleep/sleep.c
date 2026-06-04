@@ -33,12 +33,20 @@ int main(int argc,char ** argv)
         is_float = 1;
     else
     {
-        fprintf(stderr,"\"%s\": Only intigers and floats are allowed\n",*argv);
+        fprintf(stderr,"\"%s\": Only positive intigers and floats are allowed\n",*argv);
         exit(2);
     }
 
+    str++;
+
+    for (int multiplier = 100000000;isdigit(*str);multiplier /= 10)
+    {
+        time.tv_nsec += multiplier * (*str - '0');
+        str++;
+    }
     
-    printf("inputted intiger is %d\n",time.tv_sec);
+    printf("inputted number's whole part is %d\n",time.tv_sec);
+    printf("inputted number's frational part is %d\n",time.tv_nsec);
 }
 
 void usage(char * program_name)
