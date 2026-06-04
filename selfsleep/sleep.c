@@ -5,6 +5,8 @@
     * Date: June 4 2026
 \*/
 
+#define _DEFAULT_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -47,6 +49,11 @@ int main(int argc,char ** argv)
     
     printf("inputted number's whole part is %d\n",time.tv_sec);
     printf("inputted number's frational part is %d\n",time.tv_nsec);
+
+    nanosleep(&time,NULL);
+
+    return 0;
+
 }
 
 void usage(char * program_name)
