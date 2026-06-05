@@ -38,7 +38,7 @@ int main(int argc,char ** argv)
         is_float = 1;
     else
     {
-        fprintf(stderr,"\"%s\": Only positive intigers and floats are allowed\n",argv[0]);
+        fprintf(stderr,"\"%s\": Only positive intigers and floats are allowed\n",argv[1]);
         return 2;
     }
 
@@ -55,7 +55,7 @@ int main(int argc,char ** argv)
 
         if (*str != '\0')
         {
-            fprintf(stderr,"\"%s\": Only positive intigers and floats are allowed\n",argv[0]);
+            fprintf(stderr,"\"%s\": Only positive intigers and floats are allowed\n",argv[1]);
             return 3;
         }
     }
