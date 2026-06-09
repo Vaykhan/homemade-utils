@@ -13,12 +13,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+void head_fp(FILE *fp, char *filename);
+
 char cflag = 0, qflag = 0, zflag = 0;
+size_t num = 10;
 
 int main(int argc, char ** argv)
 {
     int c;
-    while ((c = getopt(argc, argv, "cnqvz")) != -1)
+    while ((c = getopt(argc, argv, "c:n:qvz")) != -1)
     {
         switch (c)
         {
@@ -42,8 +45,33 @@ int main(int argc, char ** argv)
         }
     }
 
+    char* end;
+    num = strtol(optarg,end,10);
+
+    if ((end == optarg))
+    
+
     argc -= optind;
     argv += optind;
 
-    
+
+}
+
+void head_fp(FILE *fp, char *filename)
+{
+    if (!qflag)
+        printf("%s:\n",filename);
+
+    size_t counter = 0;
+    int c;
+
+    while ( ((c = fgetc(fp)) != EOF) && (counter < num))
+    {
+        fputc(c,stdout);
+
+        if (cflag)
+            counter++;
+        else if (c == '\n')
+            counter++;
+    }
 }
