@@ -5,6 +5,17 @@
     * Date June 9 2026
     *
     * Supported flags: [cnqvz]
+    * 
+    * Flags:
+    * c: -c num : number of characters to print
+    * n: -n num : number of lines to print, default
+    * q: -q : quiet mode (doesnt tell name of the file)
+    * v: -v : verbose mode (does tell name of the file, default)
+    * z: -z : zero seperating mode, (prints a newline upon a nullbyte, FROM MY UNDERSTANDING ATLEAST)
+    * i mean, my version does that for z but im unsure if this is the default behaviour
+    * 
+    * Simple by design and my stupidity
+    * 
 \*/
 
 #define _DEFAULT_SOURCE
