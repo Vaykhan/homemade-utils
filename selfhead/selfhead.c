@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <errno.h>
 
 void head_fp(FILE *fp, char *filename);
 
@@ -48,13 +49,22 @@ int main(int argc, char ** argv)
     char* end;
     num = strtol(optarg,end,10);
 
-    if ((end == optarg))
+    if ((end == optarg) || (end[0] != '\0'))
+    {
+        fprintf(stderr, "Invalid argument: %s\n",optarg);
+        exit(1);
+    }
+    if (errno == ERANGE)
+    {
+        fprintf(stderr, "Overflow: %s\n",optarg);
+        exit(2);
+    }
     
-
     argc -= optind;
     argv += optind;
 
 
+    return 0;
 }
 
 void head_fp(FILE *fp, char *filename)
