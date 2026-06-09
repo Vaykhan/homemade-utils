@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <errno.h>
 
@@ -46,23 +47,51 @@ int main(int argc, char ** argv)
         }
     }
 
-    char* end;
-    num = strtol(optarg,end,10);
+    if (optarg != NULL)
+    {
+        char* end;
+        num = strtol(optarg,&end,10);
 
-    if ((end == optarg) || (end[0] != '\0'))
-    {
-        fprintf(stderr, "Invalid argument: %s\n",optarg);
-        exit(1);
-    }
-    if (errno == ERANGE)
-    {
-        fprintf(stderr, "Overflow: %s\n",optarg);
-        exit(2);
-    }
-    
+        if ((end == optarg) || (*end != '\0'))
+        {
+            fprintf(stderr, "Invalid argument: %s\n",optarg);
+            exit(1);
+        }
+        if (errno == ERANGE)
+        {
+            fprintf(stderr, "Overflow: %s\n",optarg);
+            exit(2);
+        }
+    }   
     argc -= optind;
     argv += optind;
 
+    do 
+    {
+        FILE* fp = stdin;
+
+        if (*argv)
+        {
+            if (!strcmp(*argv,"-"))
+            {
+                fp = stdin;
+            }
+            else
+            {
+                fp = fopen(*argv, "r");
+                if (fp == NULL)
+                {
+                    perror("fopen");
+                    continue;
+                }
+            }
+            
+        }
+        head_fp(fp,*argv);
+        if (fp != stdin)
+            fclose(fp);
+
+    } while (*(argv++));
 
     return 0;
 }
@@ -70,7 +99,11 @@ int main(int argc, char ** argv)
 void head_fp(FILE *fp, char *filename)
 {
     if (!qflag)
+    {
+        if (filename == NULL)
+            filename = "standart input";
         printf("%s:\n",filename);
+    }
 
     size_t counter = 0;
     int c;
