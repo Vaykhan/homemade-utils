@@ -77,7 +77,7 @@ int main(int argc, char ** argv)
         if (fp != stdin)
             fclose(fp);
 
-    } while (*(argv++));
+    } while (*(++argv));
 
     return 0;
 }
