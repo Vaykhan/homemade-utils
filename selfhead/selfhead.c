@@ -96,7 +96,11 @@ void head_fp(FILE *fp, char *filename)
 
     while ( ((c = fgetc(fp)) != EOF) && (counter < num))
     {
-        fputc(c,stdout);
+        if ((c == '\0') && (zflag))
+        {
+            fputc('\n',stdout);
+        } else
+            fputc(c,stdout);
 
         if (cflag)
             counter++;
